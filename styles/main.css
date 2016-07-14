@@ -1,0 +1,109 @@
+#homeTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 50%;
+    border-collapse: collapse;
+}
+
+#homeTable td, #homeTable th {
+    font-size: 1em;
+    border: 2px solid #000000;
+    padding: 3px;
+	text-align: center;
+}
+
+#homeTable th {
+    font-size: 1.1em;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+#aspect_table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 50%;
+    border-collapse: collapse;
+}
+
+#aspect_table td, #aspect_table th {
+    font-size: 1em;
+    border: 2px solid #000000;
+    /*padding: 3px;*/
+	text-align: center;
+}
+
+#aspect_table th {
+    font-size: 1.1em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #A7C942;
+    color: #ffffff;
+}
+
+faketextarea {
+    height: 200px;
+    width: 60%;
+}
+
+#faketextarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    height: 200px;
+    overflow: auto;
+    padding: 5px;
+    resize: both;
+    width: 60%;
+	left: 50%;
+	margin-left:20%;
+	margin-top:10px;
+}
+
+#removeButton, #addButton, #polaritySelect{
+	width:100%;
+	height:100%;
+	border:none;
+}
+
+#siRemoveButton{
+	margin-left:2%;
+	border:none;
+}
+
+#tblLP , #tblAdmLP {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+    height: 100px;
+    overflow-y: scroll
+}
+
+body {
+  /*padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;*/
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+FIELDSET {
+	margin: 8px;
+    margin-left: 30%;
+	margin-right: 30%;
+    border: 2px solid silver;
+    padding: 8px;    
+    border-radius: 8px;
+}
+LEGEND{
+	font-size:18px;
+	width: 100px;
+	height: 25px;
+    padding: 2px;    
+}
+
+
+
