@@ -21,6 +21,7 @@
 		<link rel="stylesheet" href="styles/sticky-footer-navbar.css" />
     
 		<script type="text/Javascript">
+			var NB = false;
 			$(document).ready(function(){				
 				//If the suggestion algorithm is frequence or PMI based
 				//then show extra options
@@ -35,6 +36,15 @@
 				//});
 				
 			});
+			
+			//showing/hiding input for Naive Bayes
+			function handleClick(cb){
+				if (cb.checked && cb.value == 'naiveBayes'){
+					showNBInput();
+				}else if(!cb.checked && cb.value == 'naiveBayes'){
+					hideNBInput();
+				}
+			}
 			
 			function showPolaritySuggestionRow(){
 				//Showing language row
@@ -51,6 +61,18 @@
 				$("#minFrequenceRow").css("display","none");
 			}
 			
+			function showNBInput(){
+				//Showing min frequence row
+				$("#trainingSetRow").css("display","");
+				NB = true;
+			}
+			
+			function hideNBInput(){
+				//Hiding min frequence row
+				$("#trainingSetRow").css("display","none");
+				NB = false;
+			}
+			
 			function validadeForm(){
 				//Checking if settings for frequence-based algorithm are valid
 				if($("#lpAspectSuggestionAlgorithm option:selected").val() == "frequenceBased"){
@@ -59,6 +81,15 @@
 						return false;
 					}
 				}
+				
+				//checking naiveBayes input
+				if(NB){
+					if(!$("#trainingSet").val()){
+						alert("You must submit a training set when using Naive Bayes");
+						return false;
+					}
+				}
+				
 				//Checking if translator options are correct
 				if($("#lpIdiom option:selected").val() != "pt" && $("#lpIdiom option:selected").val() != "en" 
 							&& $("#tNegative").get(0).checked){
@@ -141,9 +172,9 @@
 						<div class="form-group" id="polaritySuggestionRow">
 							<label for="lpSuggestionAlgorithm" class="col-sm-6 control-label">Polarity Classification Algorithm</label>
 							<div class="col-sm-3">
-								<input type="checkbox" name="polarityClassifier[]" value="PMIBased">PMI-Based<br>
-								<input type="checkbox" name="polarityClassifier[]" value="lexiconBased">Lexicon-Based<br>
-								<input type="checkbox" name="polarityClassifier[]" value="naiveBayes">Naive Bayes<br>
+								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="PMIBased">PMI-Based<br>
+								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="lexiconBased">Lexicon-Based<br>
+								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="naiveBayes">Naive Bayes<br>
 							<!--	<select name="lpSuggestionAlgorithm" id="lpSuggestionAlgorithm" class="form-control input-sm">
 								  <option value="PMIBased">PMI-Based</option>
 								  <option value="lexiconBased">Lexicon-Based</option>
@@ -218,6 +249,16 @@
 							</div>
 						</div>
 						
+						<div class="form-group" id="trainingSetRow" style="display:none;">
+							<label for="trainingSet" class="col-sm-6 control-label">
+								<abbr title=".arff Only">
+									Upload training set (<a href="english_sentences.arff" target="_blank">example</a>)
+								</abbr>						
+							</label>
+							<div class="col-sm-2">
+								<input type="file" id="trainingSet" name="trainingSet" accept=".arff">
+							</div>
+						</div>
 				</form>
 			</div>
 			

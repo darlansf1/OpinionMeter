@@ -8,9 +8,20 @@ include_once 'syntacticPatterns.php';
 sec_session_start(); 
 
 function isFormValid($mysqli) {
+	//phpAlert("checking form-> login: ".(login_check($mysqli) == true).", user_id: ".isset($_SESSION['user_id']).", lpName: ".isset($_POST['lpName']));
 	if((login_check($mysqli) == true) &&  isset($_SESSION['user_id']) && isset($_POST['lpName']))
 		return true;
 	return false;
+}
+
+function trainingSetContent(){
+	if(!isset($_FILES['trainingSet']['tmp_name']))
+		return false;
+	$ts_tmpName  	= $_FILES['trainingSet']['tmp_name'];
+	$ts_fp      	= fopen($ts_tmpName, 'r');
+	$ts_content 	= addslashes(fread($ts_fp, filesize($ts_tmpName)));
+	fclose($ts_fp);
+	return $ts_content;
 }
 
 //Inserting a new Labeling Process on database
@@ -19,6 +30,8 @@ function insertLP ($mysqli) {
 	$uID 						= $_SESSION['user_id'];
 
 	/*setting default values*/
+	$trainingSet = trainingSetContent();
+	
 	$lpAspectSuggestionAlgorithm= 'none';
 	$lpTranslatorUse = 0;
 	$lpLanguage = "xx";
@@ -29,23 +42,32 @@ function insertLP ($mysqli) {
 	$lpTranslatorUse = $_POST['translator'] == 'true' ? 1 : 0;
 	$lpLanguage = $_POST['language'];
 	
-	$query = "INSERT INTO tbl_labeling_process
-		(`process_name`, `process_admin`,`process_aspect_suggestion_algorithm`, `process_translator`, `process_language`) 
-		VALUES ( ? , ? , ? , ? , ?)";
-		
-	$stmt = $mysqli->prepare($query);
-	
 	$lpName =($lpName);
 	
-	$stmt->bind_param('sisis',$lpName,$uID,$lpAspectSuggestionAlgorithm, $lpTranslatorUse, $lpLanguage);
-			
+	if($trainingSet === false){
+		$query = "INSERT INTO tbl_labeling_process
+		(`process_name`, `process_admin`,`process_aspect_suggestion_algorithm`, `process_translator`, `process_language`) 
+		VALUES ( ? , ? , ? , ? , ?)";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param('sisis',$lpName,$uID,$lpAspectSuggestionAlgorithm, $lpTranslatorUse, $lpLanguage);
+	}else{
+		$trainingSet = utf8_encode($trainingSet);
+		$query = "INSERT INTO tbl_labeling_process
+		(`process_name`, `process_admin`,`process_aspect_suggestion_algorithm`, `process_translator`, `process_language`, `process_training_set`) 
+		VALUES ( ? , ? , ? , ? , ?, ?)";
+		$stmt = $mysqli->prepare($query);
+		$stmt->bind_param('sisiss',$lpName,$uID,$lpAspectSuggestionAlgorithm, $lpTranslatorUse, $lpLanguage, $trainingSet);
+	}
+		
 	if(!$stmt->execute()){
+		phpAlert("deu merda");
 		echo $mysqli->error;
 		$stmt->close();
 		$mysqli->rollback();
 		setAlert("Error inserting process' data into the database");
 		return;
 	}
+	
 	$lpID = $stmt->insert_id;
 	$_SESSION['cur_lpName'] = $lpName;
 	$_SESSION['cur_lpID'] = $lpID;
@@ -116,10 +138,9 @@ function insertDocuments ( $mysqli , $lpID ) {
 }
 
 if ( isFormValid($mysqli) ) {
-	
 	$mysqli->autocommit(FALSE);
 	$mysqli->commit();
-
+	
 	$lpID = insertLP ($mysqli);
 	
 	if(isAlertEmpty()){
@@ -158,6 +179,7 @@ if ( isFormValid($mysqli) ) {
 	
 	if (isAlertEmpty()) {
 		header('Location: ./applyAlgorithms.php');
+		//header('Location: ./index.php');
 		exit();
 	}
 	

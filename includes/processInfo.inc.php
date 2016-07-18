@@ -154,7 +154,7 @@ function getAspects($mysqli, $lpID, $toEcho){
 	}
 	
 	for($i = 0; $i < count($aspects); $i++){
-		$str .= '[';
+		$str .= '[ ';
 		foreach($keys as $j){
 			if($i == 0)
 				array_push($ret_aspects, $aspects[$i][$j]);

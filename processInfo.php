@@ -107,7 +107,15 @@
 				negative /= aspects.length;
 				neutral /= aspects.length;
 				
-				/*total = positive+negative+neutral;
+				total = positive+negative+neutral;
+				
+				_positive = Math.round(positive * 100)/100; 
+				_negative = Math.round(negative * 100)/100;
+				_neutral = Math.round(neutral * 100)/100;
+				_total = Math.round(total * 100)/100;
+				
+				var info = $("#info"+chartNumber);
+				info.html("Aspect: "+aspects[0][chartNumber*5]+"<br>Total Count: "+_total+"<br>Positive Count: "+_positive+"<br>Neutral Count: "+_neutral+"<br>Negative Count: "+_negative);
 				
 				positive = positive/total*100;
 				negative = negative/total*100;
@@ -115,7 +123,7 @@
 				
 				positive = Math.round(positive * 100)/100; 
 				negative = Math.round(negative * 100)/100;
-				neutral = Math.round(neutral * 100)/100;*/
+				neutral = Math.round(neutral * 100)/100;
 				
 				var data = {
 					labels: labels,
@@ -195,7 +203,7 @@
 						$aspect = $aspects[$i];
 						echo "
 							<div style='float:left;border:1px solid #ddd; text-align: center'>
-								Aspect: $aspect
+								<p id=info$i>Aspect: $aspect<p>
 								<canvas id=\"myAspectChart$i\" width=\"200\" height=\"200\"></canvas>
 								<script>drawPieChart($i);</script>
 							</div>";

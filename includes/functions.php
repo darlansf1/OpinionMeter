@@ -371,6 +371,7 @@ function getEnglishAlgorithm($alg) {
 		case "frequenceBased"		:return "Frequence-based";
 		case "lexiconBased"			:return "Lexicon-based";
 		case "PMIBased"				:return "PMI-based";
+		case "naiveBayes"			:return "Naive Bayes";
 	}
 	return "Undefined";
 }

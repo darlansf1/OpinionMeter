@@ -9,7 +9,7 @@ include_once 'includes/register.inc.php';
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-        <title>Cadastro</title>
+        <title>Register</title>
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -30,11 +30,11 @@ include_once 'includes/register.inc.php';
 		    <nav class="navbar navbar-default">
 				<div class="container">
 					<div class="navbar-header navbar-left">
-						<a class="navbar-brand" href="index.php">RotuLabic - Sistema de Apoio à Rotulação Manual de Textos</a>
+						<a class="navbar-brand" href="index.php">Opinion-meter: Multi-language Aspect-Based Sentiment Analysis</a>
 					</div>
 					<div id="navbar" class="collapse navbar-collapse navbar-right">
 						<ul class="nav navbar-nav">
-							<li><a href="help.php">Manual</a></li>
+							<li><a href="help.php">help</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
@@ -47,13 +47,13 @@ include_once 'includes/register.inc.php';
 			<form class="form-horizontal" action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" method="POST" name="registration_form">
 				<fieldset>
 					<div id="legend">
-						<legend >Novo Cadastro</legend>
+						<legend >New User</legend>
 					</div>
 					
 					<div class="form-group">
-						<label for="username" class="col-sm-2 control-label">Usuário</label>
+						<label for="username" class="col-sm-2 control-label">User Name</label>
 						<div class="col-sm-5">
-							<input type="text" id="username" name="username" class="form-control" placeholder="Usuário" required autofocus/>
+							<input type="text" id="username" name="username" class="form-control" placeholder="Name" required autofocus/>
 						</div>
 					</div>
 					
@@ -65,16 +65,16 @@ include_once 'includes/register.inc.php';
 					</div>
 					
 					<div class="form-group">
-						<label for="password" class="col-sm-2 control-label">Senha</label>
+						<label for="password" class="col-sm-2 control-label">Password</label>
 						<div class="col-sm-5">
-							<input type="password"name="password" id="password" class="form-control" placeholder="Senha" required/>
+							<input type="password"name="password" id="password" class="form-control" placeholder="Password" required/>
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<label for="confirmpwd" class="col-sm-2 control-label">Confirmar Senha</label>
+						<label for="confirmpwd" class="col-sm-2 control-label">Confirm Password</label>
 						<div class="col-sm-5">
-							<input type="password"name="confirmpwd" id="confirmpwd" class="form-control" placeholder="Confirmar senha" required/>
+							<input type="password"name="confirmpwd" id="confirmpwd" class="form-control" placeholder="Password" required/>
 						</div>
 					</div>
 					<div class="form-group">	
@@ -84,7 +84,7 @@ include_once 'includes/register.inc.php';
 													   this.form.username,
 													   this.form.email,
 													   this.form.password,
-													   this.form.confirmpwd);" > Cadastrar
+													   this.form.confirmpwd);" > Sign up
 							</button>
 						</div>
 					</div>
@@ -94,8 +94,8 @@ include_once 'includes/register.inc.php';
 		<footer class="footer">
 			<div class="container">
 				<p class="text-muted">
-					Esta obra de <a xmlns:cc="http://creativecommons.org/ns#" href="http://labic.icmc.usp.br/" property="cc:attributionName" rel="cc:attributionURL">LABIC | ICMC-USP</a> 
-					está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Atribuição 4.0 Internacional</a>.				
+					This is a work from <a xmlns:cc="http://creativecommons.org/ns#" href="http://labic.icmc.usp.br/" property="cc:attributionName" rel="cc:attributionURL">LABIC | ICMC-USP</a> 
+					and it is licensed by <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Atribuição 4.0 Internacional</a>.				
 					<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
 				</p>
 			</div>

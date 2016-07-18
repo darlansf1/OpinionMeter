@@ -37,6 +37,7 @@ INSERT INTO aux_algorithm (aux_algorithm) VALUES
 ('none'),
 ('PMIBased'),
 ('lexiconBased'),
+('naiveBayes'),
 ('frequenceBased');
 --
 -- Table structure for table 'aux_PMI_hits'
@@ -109,6 +110,7 @@ CREATE TABLE IF NOT EXISTS tbl_labeling_process (
   process_aspect_suggestion_algorithm varchar(50) NOT NULL DEFAULT 'none',
   process_translator tinyint(1) NOT NULL DEFAULT 0,
   process_language varchar(10) NOT NULL DEFAULT 'XX',
+  process_training_set text CHARACTER SET utf8mb4 collate utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (process_id),
   UNIQUE KEY unique_name (process_name,process_admin),
   KEY idx_lp_admin (process_admin)

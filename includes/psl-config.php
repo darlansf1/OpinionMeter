@@ -12,8 +12,8 @@ define("DEFAULT_ROLE", "member");
 define("SECURE", FALSE);
 
 //Translator login information
-define("CLIENT_ID", "HERE GOES YOUR CLIENT ID");    
-define("CLIENT_SECRET", "HERE GOES YOUR CLIENT SECRET");
-define("ACCOUNT_KEY", "HERE GOES YOUR ACCOUNT KEY");
+define("CLIENT_ID", "rotulabic_v1");    
+define("CLIENT_SECRET", "1hVAY9fycWp7aXoYsmSLYjvX+2yWL7x8vqJ0VujPTN0=");
+define("ACCOUNT_KEY", "La8SfwBArqOWy/Xy1ZErUlBecVhMCiuPYGSVLwOHhIs");
 
 ?>

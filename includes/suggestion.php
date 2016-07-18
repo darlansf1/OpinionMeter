@@ -2,6 +2,7 @@
 include_once 'functions.php';
 include_once 'frequence.php';
 include_once 'lexicon.php';
+include_once 'naiveBayes.php';
 include_once 'PMI.php';
 
 function getAspectSuggestions($mysqli){
@@ -109,6 +110,8 @@ function getAspectPolarities($mysqli, $aspects){
 			$aux = getPolaritiesFromLexicon($mysqli, $aspects, $translator, $language, $neighborhood);
 		}else if($algorithm == 'PMIBased'){
 			$aux = getPolaritiesFromPMI($mysqli, $aspects, $translator, $language);
+		}else if($algorithm == 'naiveBayes'){
+			$aux = getPolaritiesFromNB($mysqli, $aspects);
 		}
 		if($aux !== false){
 			array_push($suggestions, array($algorithm, $aux));
