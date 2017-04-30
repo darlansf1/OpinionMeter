@@ -248,7 +248,7 @@ unsetLabelingProcessData();
 						</div>
 						<div id="collapse8" class="panel-collapse collapse ">
 							<div class="panel-body">
-								The system allows the user to download the results of the analysis. The results come in a set of XML files, one for each text file uploaded for processing and for each method used. The files contains information about the aspects identified following the format presented in the example below.
+								The system allows the user to download the results of the analysis. The results come in a set of XML files, one for each text file uploaded for processing and for each method used. The files contain information about the aspects identified following the format presented in the example below.
 								<p><img src="appendices/XML.png" width="800" border="1"></p>
 								In this format, the tag 'aspectTerms' marks the beginning and the end of the list of aspects identified in the document. Each tag named 'aspectTerm' indicates an aspect, and enclosed within its delimiter there is a set of properties of the aspects that are, in the order they appear, the word identified as aspect, the polarity of the sentiment associated, and the positions where the word starts and ends in the document.
 							</div>
@@ -272,7 +272,7 @@ unsetLabelingProcessData();
 									<br>
 									  <b>Hu, M. and Liu, B. (2004).</b> Mining opinion features in customer reviews. In AAAI, volume 4, pages 755–760.<br>
 									
-									  <b>Koch, K.-R. (1990).</b> Bayes’ theorem. In Bayesian Inference with Geodetic Applications, pages 4–8. Springer.<br>
+									  <b>Koch, K. R. (1990).</b> Bayes’ theorem. In Bayesian Inference with Geodetic Applications, pages 4–8. Springer.<br>
 									
 									  <b>Rish, I. (2001).</b> An empirical study of the naive bayes classifier. In IJCAI 2001 workshop on empirical methods in artificial intelligence, volume 3, pages 41–46. IBM New York.<br>
 									

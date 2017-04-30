@@ -81,21 +81,15 @@ class HTTPTranslator {
 	function translateSpecial($originalText, $fromLanguage, $tried){
 		$result = array();
 		try {
-			//Client ID of the application.
-			$clientID       = CLIENT_ID;
-			//Client Secret key of the application.
-			$clientSecret = CLIENT_SECRET;
+			//Account Key
+			$key		  = ACCOUNT_KEY;
 			//OAuth Url.
-			$authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
-			//Application Scope Url
-			$scopeUrl     = "http://api.microsofttranslator.com";
-			//Application grant type
-			$grantType    = "client_credentials";
+			$authUrl      = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 
 			//Create the AccessTokenAuthentication object.
 			$authObj      = new AccessTokenAuthentication();
 			//Get the Access token.
-			$accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+			$accessToken  = $authObj->getTokens($authUrl, $key);
 			//Create the authorization Header string.
 			$authHeader = "Authorization: Bearer ". $accessToken;
 
@@ -105,6 +99,7 @@ class HTTPTranslator {
 			$originalText = utf8_encode($originalText);
 			
 			$inputStrArr  = explode(" ", $originalText);
+	
 			$contentType  = 'text/plain';
 			//Create the Translator Object.
 			$translatorObj = new HTTPTranslator();

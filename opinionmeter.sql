@@ -17,7 +17,7 @@ SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 --
 CREATE USER 'opmeter_user'@'localhost' IDENTIFIED BY 'opinion_meter';
 GRANT ALL ON opmeter.* TO 'opmeter_user'@'localhost';
-USE 'opmeter';
+USE opmeter;
 -- --------------------------------------------------------
 --
 -- Table structure for table 'aux_algorithm'
@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS aux_PMI_hits (
   portuguese_positive int(11) NOT NULL DEFAULT 1,
   english_positive int(11) NOT NULL DEFAULT 1
 ) ;
+INSERT INTO aux_PMI_hits VALUES ();
 
 --
 -- Dumping data for table 'aux_PMI_hits'
@@ -110,7 +111,7 @@ CREATE TABLE IF NOT EXISTS tbl_labeling_process (
   process_aspect_suggestion_algorithm varchar(50) NOT NULL DEFAULT 'none',
   process_translator tinyint(1) NOT NULL DEFAULT 0,
   process_language varchar(10) NOT NULL DEFAULT 'XX',
-  process_training_set text CHARACTER SET utf8mb4 collate utf8mb4_unicode_ci NOT NULL,
+  process_training_set longtext CHARACTER SET utf8mb4 collate utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (process_id),
   UNIQUE KEY unique_name (process_name,process_admin),
   KEY idx_lp_admin (process_admin)
@@ -130,9 +131,9 @@ CREATE TABLE IF NOT EXISTS tbl_used_algorithm (
 --
 CREATE TABLE IF NOT EXISTS tbl_pmi_phrases (
   phrase varchar(100) NOT NULL,
-  phrase_count bigint(16) NOT NULL,
-  negative_count int(11) NOT NULL,
-  positive_count int(11) NOT NULL,
+  phrase_count bigint(16) NOT NULL DEFAULT 0,
+  negative_count int(11) NOT NULL DEFAULT 0,
+  positive_count int(11) NOT NULL DEFAULT 0,
   pmi_lp int(11) NOT NULL,
   PRIMARY KEY (phrase, pmi_lp)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

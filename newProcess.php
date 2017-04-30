@@ -172,7 +172,11 @@
 						<div class="form-group" id="polaritySuggestionRow">
 							<label for="lpSuggestionAlgorithm" class="col-sm-6 control-label">Polarity Classification Algorithm</label>
 							<div class="col-sm-3">
-								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="PMIBased">PMI-Based<br>
+								<!--<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="PMIBased">PMI-Based<br>
+								Microsoft's search API has become too restrictive 
+								for free tier users. We're commenting this portion of the code
+								util we find a suitable alternative, but nothing keeps you
+								from uncommenting it and using it as you like-->
 								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="lexiconBased">Lexicon-Based<br>
 								<input type="checkbox" onclick='handleClick(this);' name="polarityClassifier[]" value="naiveBayes">Naive Bayes<br>
 							<!--	<select name="lpSuggestionAlgorithm" id="lpSuggestionAlgorithm" class="form-control input-sm">

@@ -60,7 +60,6 @@ function insertLP ($mysqli) {
 	}
 		
 	if(!$stmt->execute()){
-		phpAlert("deu merda");
 		echo $mysqli->error;
 		$stmt->close();
 		$mysqli->rollback();

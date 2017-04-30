@@ -45,9 +45,9 @@ function executeTagger($command, &$counts, $explodedText){
 				$word = strtoupper($explodedText[floor($i/2)]);
 				$word = processWord($word);
 				//phpAlert($result[$i+1]);
-				//phpAlert("BEING INCLUDED: ".$word);
-				if(strtolower(gettype($word)) == "string"){
-					//phpAlert("noun: $word");
+				//phpAlert("BEING INCLUDED: ".$word.", len: ".strlen(utf8_decode($word)));
+				if(strtolower(gettype($word)) == "string" and strlen(utf8_decode($word)) >= 4){
+					#phpAlert("noun: ".);
 					if(!array_key_exists($word, $counts)){
 						$counts[$word] = 1;
 					}else{ 
@@ -106,8 +106,8 @@ function calculateFrequency($originalLanguage, $model, $useTranslator, $lpID, $m
 	$stmt->close();
 	$retval = array();
 	foreach($docs as $text){
-		$originalText = ($text);
-		$text = removeSpecialChars(utf8_encode(removeSpecialChars($text)));
+		$originalText = $text;
+		$text = removeSpecialChars(utf8_encode(removeSpecialChars($originalText)));
 		$explodedText = explode(" ", $text);
 		
 		if($useTranslator == 'true'){// going to use the translator

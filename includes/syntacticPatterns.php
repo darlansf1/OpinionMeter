@@ -265,77 +265,6 @@ function findPatterns($originalLanguage, $useTranslator, $tagdata, $lpId, $mysql
 	
 }
 
-/*function findPatternsSpecial($originalLanguage, $model, $useTranslator, $lpID, $mysqli, $minFreq){
-	update_hits($mysqli);
-	
-	$command = 'java -Djava.awt.headless=true -jar "./opennlp/POSTagger/dist/POSTagger.jar"';
-	$modelPtME = "./opennlp/pos-models/pt-pos-maxent.bin";
-	$modelEnME = "./opennlp/pos-models/en-pos-maxent.bin";
-	$modelPtP = "./opennlp/pos-models/pt-pos-perceptron.bin";
-	$modelEnP = "./opennlp/pos-models/en-pos-perceptron.bin";
-	
-	$usedModel = "./opennlp/pos-models/";
-	
-	$used_language = 'en';
-	if($originalLanguage == 'pt' && $useTranslator == 'false'){
-		$usedModel = $usedModel."pt-pos-";
-		$used_language = 'pt';
-	}else if($originalLanguage == 'en' || $useTranslator == 'true'){
-		$usedModel = $usedModel."en-pos-";
-	}else{
-		return;
-	}
-	
-	if($model == 'perceptron'){
-		$usedModel = $usedModel."perceptron.bin";
-	}else{
-		$usedModel = $usedModel."maxent.bin";
-	}
-
-	$phrases = array();
-	$counts = array();
-	$nouns = array();
-	$noun_counts = array();
-	
-	$docs = array();
-	$doc_ids = array();
-    $query = "	SELECT document_text, document_id 
-					FROM tbl_document 
-					WHERE document_process = ?"; 
-	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param('i',$lpID);
-	if($stmt->execute()){
-		$result = $stmt->get_result();
-		while($data = mysqli_fetch_row($result)){
-			$data[0] =utf8_decode($data[0]);
-			array_push($docs, $data[0]);
-			array_push($doc_ids, $data[1]);
-		}
-	}else{
-		setAlert("Error retrieving texts");
-	}
-	$stmt->close();
-	$i = 0;
-	foreach($docs as $text){
-		$originalText = $text;
-		$text = removeSpecialChars($text);
-		$explodedText = explode(" ", $text);
-		
-		if($useTranslator == 'true' && $originalLanguage != 'en'){// going to use the translator
-			$translator = new HTTPTranslator();
-			$translations = $translator->translateSpecial($originalText, $originalLanguage, true);
-			if(count($translations) == 0) array_push($translations, "");
-			$text = $translations[0];
-			for($j = 1; $j < count($translations); $j++){
-				$text = $text." ".$translations[$j];
-			}
-		}
-		
-		executePMITagger($command." ".$usedModel." ".$text, $phrases, $counts, $explodedText, $useTranslator, $used_language, $nouns, $noun_counts);
-		$i++;
-	}
-	savePhrases($counts, $lpID, $nouns, $noun_counts, $mysqli, $minFreq);
-}*/
 
 // counts[i][0]: hits for phrase i
 // counts[i][1]: negative hits for phrase i
@@ -345,18 +274,23 @@ function findPatterns($originalLanguage, $useTranslator, $tagdata, $lpId, $mysql
 function savePhrases($counts, $lpID, /*$nouns, $noun_counts,*/ $mysqli/*, $minFreq*/){
 	$query = 	"INSERT INTO `tbl_pmi_phrases`(`pmi_lp`, `phrase`,
 					`phrase_count`, `negative_count`, `positive_count`) VALUES (?,?,?,?,?)";
+	#var_dump($counts);
 	for($i = 0; $i < count($counts); $i++){
-			$stmt = $mysqli->prepare($query);	
-			$phrase = $counts[$i][3]." ".$counts[$i][4];
-			
-			$phrasecount = min($counts[$i][0], 9999999999999999);
-			$stmt->bind_param("isiii",$lpID,$phrase,$phrasecount,$counts[$i][1],$counts[$i][2]);
-			if(!$stmt->execute()){	
-				echo $mysqli->error;
-				$mysqli->rollback();
-				setAlert("Failed to insert data into the database");
-			}
-			$stmt->close();
+		if(!isset($counts[$i]) or is_null($counts[$i])) {
+			continue;
+		}
+		$stmt = $mysqli->prepare($query);	
+		$phrase = $counts[$i][3]." ".$counts[$i][4];
+		
+		$phrasecount = min($counts[$i][0], 9999999999999999);
+		
+		$stmt->bind_param("isiii",$lpID,$phrase,$phrasecount,$counts[$i][1],$counts[$i][2]);
+		if(!$stmt->execute()){	
+			echo $mysqli->error;
+			$mysqli->rollback();
+			setAlert("Failed to insert data into the database");
+		}
+		$stmt->close();
 	}
 	
 	/*$query = 	"INSERT INTO `tbl_word_frequence`(`wf_process`, `wf_frequence`, `wf_word`) VALUES (?,?,?)";

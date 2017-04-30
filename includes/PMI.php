@@ -4,12 +4,11 @@ include_once 'psl-config.php';
 function search($query) 
 {
     // Replace this value with your account key
-    $accountKey = ACCOUNT_KEY;            
-    $ServiceRootURL =  'https://api.datamarket.azure.com/Data.ashx/Bing/Search/';                    
-    $WebSearchURL = $ServiceRootURL . 'v1/Composite?Sources=%27web%27&$format=json&Query=';
+    $accountKey = BING_ACCOUNT_KEY;            
+    $ServiceRootURL =  'https://api.cognitive.microsoft.com/bing/v5.0/search';                    
+    $WebSearchURL = $ServiceRootURL . '?responseFilter=webpages&q=';
 	
-    $cred = sprintf('Authorization: Basic %s', 
-      base64_encode($accountKey . ":" . $accountKey) );
+    $cred = sprintf('Ocp-Apim-Subscription-Key: %s', $accountKey);
 
     $context = stream_context_create(array(
         'http' => array(
@@ -20,14 +19,13 @@ function search($query)
     $request = $WebSearchURL . urlencode( '\'' .$query. '\'');
 	
 	//$request = '%27Dilma%27&$format=JSON';
-
+	sleep(1);#requests are limited per time
     $response = file_get_contents($request, 0, $context);
 
     $jsonobj = json_decode($response);
-
 	if($jsonobj == null || !$jsonobj)
 		return 0;
-	return $jsonobj->d->results[0]->WebTotal;
+	return $jsonobj->webPages->totalEstimatedMatches;
 }
 
 function english_hits($phrase, $type){
@@ -58,7 +56,7 @@ function SO($phrase, $lpID, $mysqli){
 		$phrase_hits = $data[0];
 		
 		//echo("///phrase: $phrase, hits: $phrase_hits///");
-		//phpAlert("phrase hits: ".$phrase_hits);
+		//phpAlert($phrase.': '.$phrase_hits);
 		if($phrase_hits == 0)
 			return 0;
 		
@@ -66,6 +64,7 @@ function SO($phrase, $lpID, $mysqli){
 		$phrase_positive = $data[2];
 		
 		$data = get_hits($mysqli, $lpID);
+		//phpAlert($lpID." data: $data");
 		if($data == null)
 			return;
 		
@@ -73,6 +72,7 @@ function SO($phrase, $lpID, $mysqli){
 		$positivehits = $data[0];
 		
 		$val = (($phrase_positive/($phrase_hits*$positivehits+0.001))-($phrase_negative/($phrase_hits*$negativehits+0.001)))*10000000000000000;
+		//phpAlert("///phrase: $phrase, SO: $val///");
 		return $val;
 	}else{
 		setAlert("Error retrieving PMI data");
@@ -82,6 +82,7 @@ function SO($phrase, $lpID, $mysqli){
 
 function get_hits($mysqli, $lpID){
 	$result = array();
+	
 	$query = "	SELECT `process_translator`, `process_language`
 					FROM tbl_labeling_process
 					WHERE process_id = ?"; 
@@ -91,13 +92,14 @@ function get_hits($mysqli, $lpID){
 	if($stmt->execute()){
 		$result = $stmt->get_result();
 		$data = mysqli_fetch_row($result);
+		
 		if($data[0] == 1 || $data[1] == 'en'){
 			$select_query = "SELECT english_positive, english_negative FROM aux_pmi_hits";
 		}else{
 			$select_query = "SELECT portuguese_positive, portuguese_negative FROM aux_pmi_hits";
 		}	
+
 		$select_stmt = $mysqli->prepare($select_query);
-		
 		if($select_stmt->execute()){
 			$result = $select_stmt->get_result();
 			$data = mysqli_fetch_row($result);
@@ -110,12 +112,13 @@ function get_hits($mysqli, $lpID){
 		}
 		$select_stmt->close();
 	}else{
-		setAlert("Error retrieving PMI data");
+		setAlert("Error PMI data");
 		return null;
 	}
 	$stmt->close();
 								
 	$select_stmt = $mysqli->prepare($select_query);
+	
 	return $result;
 }
 
@@ -299,6 +302,7 @@ function getPolaritiesFromPMI($mysqli, $aspect_suggestions, $translator, $langua
 	}
 	$stmt->close();
 	
+	
 	$aspects = $aspect_suggestions[0];
 	$polarities = array();
 	$sentences = array();
@@ -354,6 +358,7 @@ function getPolaritiesFromPMI($mysqli, $aspect_suggestions, $translator, $langua
 			}
 		}
 		$polarity = intval($polarity);
+		//phpAlert("intval: $polarity");
 		if($polarity > 0)
 			array_push($sentence_polarities, "POSITIVE");
 		else if($polarity < 0)
@@ -362,7 +367,9 @@ function getPolaritiesFromPMI($mysqli, $aspect_suggestions, $translator, $langua
 			array_push($sentence_polarities, "NEUTRAL");
 	}
 	
+	//var_dump($sentence_polarities);
 	$keys = array_keys($aspect_suggestions[1]);
+	//var_dump($keys);
 	$evaluated_aspects = array();
 	$regex = "/^[\\.\\,\\b\\s\\n\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\_\\+\\=\\[\\]\\{\\}\\;\\:\\'\\\"\\\\\\/\\<\\>\\?]+$/";
 	//phpAlert("count(evaluated_aspects): ".count($evaluated_aspects));
