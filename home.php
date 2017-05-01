@@ -15,7 +15,21 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		
+		<script type="text/Javascript">
+			function removeLP(lpID){
+				if(confirm('Are you sure you want to remove the Labeling Process with ID '+lpID+'?')) {
+				    var row = document.getElementById('row'+lpID);
+					row.parentNode.removeChild(row);
+					$.ajax({
+							url: 'includes/home.inc.php',
+							type: 'POST',
+							data: {idToRemove:lpID},
+							success: function(response){alert(response);}
+						}
+					).send;
+				}
+			}
+		</script>
 		<link rel="stylesheet" href="styles/main.css" />
 		<link rel="stylesheet" href="styles/sticky-footer-navbar.css" />	
     </head>

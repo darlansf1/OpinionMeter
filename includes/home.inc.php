@@ -150,9 +150,10 @@ function printAdminTableRow ( $lpInfo,$mysqli ){
 	$lpID = $lpInfo[0];
 	$lpInfo[1] =($lpInfo[1]);
 	
-	echo '<tr>';
+	echo "<tr id='row$lpID'>";
 	echo '<td>'.$lpID.'</td>';
 	echo '<td><a href="processInfo.php?lpID=' .$lpID. '">' .$lpInfo[1]. '</a></td>';
+	echo "<td><input type='button' style='width: 100%; height: 100%' id='removeLPButton' onclick='removeLP($lpID)' value='x'></input></td>";
 	echo '</tr>';	
 }
 
@@ -166,7 +167,7 @@ function printAdminTableRow ( $lpInfo,$mysqli ){
 */
 function printAdminTable( $table,$mysqli ) {
 	if ($table->num_rows > 0){
-		echo '<thead><tr><th>ID</th><th>Nome</th></tr></thead>';
+		echo '<thead><tr><th>ID</th><th>Name</th></tr></thead>';
 		echo '<tbody>';
 		while($row = mysqli_fetch_row($table)){
 			printAdminTableRow ( $row,$mysqli );
@@ -198,4 +199,20 @@ function getAdminLPs($mysqli) {
 		setAlert("Sorry. Error retrieving data.");
 	}
 	$stmt->close();
+}
+
+if (isset($_POST['idToRemove'])) {
+	$id = $_POST['idToRemove'];
+	
+	$query = "DELETE FROM tbl_labeling_process WHERE process_id = ?";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param('i', $id);
+		
+	if(!$stmt->execute()){
+		echo "Failed to remove process with ID $id. "+$mysqli->error;
+		$stmt->close();
+	}
+	
+	$stmt->close();
+	echo "Process with ID $id removed successfully.";
 }
