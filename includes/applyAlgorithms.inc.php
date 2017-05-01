@@ -136,19 +136,14 @@ function getDocumentInfo ($mysqli) {
 }
 
 function applyAlgorithms($mysqli){
-	echo "in applyAlgorithms";
 	$lpID = $_SESSION['cur_lpID'];
 	$docID = $_SESSION['curDocID'];
-	echo "gonna get aspects";
 	$aspects = getAspectSuggestions($mysqli);
-	echo "gonna get polarities";
 	$polarities = getAspectPolarities($mysqli, $aspects);
-	echo "gonna make query";
 	$query = "INSERT INTO tbl_aspect (`aspect_doc`, `aspect_lp`, `aspect_aspect`,
 										`aspect_polarity`, `aspect_polarity_alg`, `aspect_start`, `aspect_end`) 
 										VALUES (? , ?, ?, ?, ?, ?, ?)";
 	$stmt = $mysqli->prepare($query);
-	echo "prepared query";
 	#echo var_dump($query);
 	#echo var_dump($stmt);
 	$stmt->bind_param('iisssii',$docID,$lpID,$aspect,$polarity,$algorithm, $start,$end);
@@ -190,13 +185,9 @@ if (isset($_SESSION['cur_lpID'])){
 	if(!isset($_SESSION['curDocID'])){
 		getFirstDocument ($mysqli);		//Setting current document ID
 		applyAlgorithms($mysqli);
-		#header("Refresh:0");
-		#exit();
 	}else if($_SESSION['curDocID'] < $_SESSION['maxDocID']){
 		$_SESSION['curDocID'] = $_SESSION['curDocID'] + 1;
 		applyAlgorithms($mysqli);
-		#header("Refresh:0");
-		#exit();
 	}else{
 		$mysqli->commit();
 		$mysqli->autocommit(TRUE);

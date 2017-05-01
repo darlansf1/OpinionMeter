@@ -149,17 +149,6 @@ if ( isFormValid($mysqli) ) {
 	
 	$mysqli->commit();
 	
-	/*/If this process uses the PMI algorithm to predict polarity, calculate PMIs and word frequence
-	if($_POST['lpSuggestionAlgorithm'] == 'PMIBased'){	
-		findPatterns($_POST['language'], 'maxent', $_POST['translator'], $lpID, $mysqli, $_POST['min_frequency']);
-	}
-	//If this process uses the frequence-based algorithm to predict aspects, calculate word frequence
-	else if($_POST['lpAspectSuggestionAlgorithm'] == 'frequenceBased'){
-		//phpAlert("RotuLabic is going to calculate word frequences. This might take a little while.");
-		calculateFrequency($_POST['language'], 'maxent', $_POST['translator'], $lpID, $mysqli, $_POST['min_frequency']);
-	}*/
-
-	
 	//If this process uses the frequence-based algorithm to predict aspects, calculate word frequence
 	if($_POST['lpAspectSuggestionAlgorithm'] == 'frequenceBased'){
 		//phpAlert("RotuLabic is going to calculate word frequences. This might take a little while.");
@@ -178,7 +167,6 @@ if ( isFormValid($mysqli) ) {
 	
 	if (isAlertEmpty()) {
 		header('Location: ./applyAlgorithms.php');
-		//header('Location: ./index.php');
 		exit();
 	}
 	
