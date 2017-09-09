@@ -71,6 +71,7 @@ function breakIntoWordArrays($sentences) {
 		}
 		$sentence_index++;
 	}
+	$text = trim($text);
 	return array($text, $wordArraySentencesNoSpecials, $wordArraySentencesOriginals, $word_positioning);
 }
 
@@ -144,16 +145,15 @@ function getPolaritiesFromLexicon($mysqli, $aspect_suggestions, $translator, $la
 	return $polarities;
 }
 
-
-/* Unity test
+/*Unity test
 	$fileName = "lexicon/negative-en.txt";
 	$handle = fopen($fileName, "r");
-  $text = "The bartender abandoned me";
+  $text = "o garçon me abandonou";
   $aspects = array();
-	array_push($aspects, array(0 => "BARTENDER"));
-	array_push($aspects, array(0 => 4));
+	array_push($aspects, array(0 => "GARCON"));
+	array_push($aspects, array(0 => 2));
 	echo var_dump($aspects);
-	$result = getPolaritiesFromLexiconTest($aspects, 0,"en", $text);
+	$result = getPolaritiesFromLexiconTest($aspects, 1,"pt", $text);
 	echo var_dump($result);
 
 	if ($handle) {
@@ -164,5 +164,7 @@ function getPolaritiesFromLexicon($mysqli, $aspect_suggestions, $translator, $la
 		fclose($handle);
 	} else {
 		phpAlert("Error when accessing lexicon file on unit test.");
-	}*/
+	}
+*/
+
 ?>
