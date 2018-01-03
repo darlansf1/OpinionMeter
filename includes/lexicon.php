@@ -8,7 +8,7 @@ function getLexiconAsArray($polarity, $language){
 		return array();
 
 	$lexicon = array();
-	$fileName = "includes/lexicon/".$polarity."-".$language."-stem.txt";
+	$fileName = "includes/lexicon/".$polarity."-".$language.".txt";
 
 	$handle = fopen($fileName, "r");
 	if ($handle) {
@@ -105,7 +105,7 @@ function getPolaritiesFromLexicon($mysqli, $aspect_suggestions, $translator, $la
 	$aspects = $aspect_suggestions[0];
 	foreach($keys as $i){
 		$aspect = $aspects[$i];
-		//echo "resolving for aspect $aspect<br>";
+		# echo "resolving for aspect $aspect<br>";
 
 		$sentence_index = array_shift($word_positioning[$aspect]);
 		$word_index = array_shift($word_positioning[$aspect]);
@@ -114,22 +114,21 @@ function getPolaritiesFromLexicon($mysqli, $aspect_suggestions, $translator, $la
 
 		//look around of the aspect for positive and negative words
 		for($j = max(0, $word_index-$neighborhood); $j < min(count($wordArraySentencesOriginals[$sentence_index]), $word_index+$neighborhood); $j++){//goes word by word on the sentence
-			//if($j == $index2) continue;	//skip the aspect itself
+			if($j == $word_index) continue;	//skip the aspect itself
 
 			$term = $wordArraySentencesNoSpecials[$sentence_index][$j];
 			if($language != 'en' && $translator == 1)// && count($translations) > ($sentence_offsets[$sentence_index])+$j)
 				$term = $translations[($sentence_offsets[$sentence_index])+$j];
 
 			$term = strtolower($term);
-			$term = doStem($term, $stemLang);
-			//echo "stemmed term $term<br>";
+			# echo "stemmed term $term<br>";
 
 			if(array_search($term, $negative_lexicon) != ""){//give negative points if term is in the negative_lexicon, penalizes distance to aspect
 				$polarity -= count($wordArraySentencesOriginals[$sentence_index])-abs($j-$word_index);
-				//echo "NEGATIVE ---".$term."<br>";
+				# echo "NEGATIVE ---".$term."<br>";
 			}if(array_search($term, $positive_lexicon) != ""){//give positive if term is in the positive_lexicon, penalizes distance to aspect
 				$polarity += count($wordArraySentencesOriginals[$sentence_index])-abs($j-$word_index);
-				//echo "POSITIVE --- ".$term."<br>";
+				# echo "POSITIVE --- ".$term."<br>";
 			}
 		}
 
